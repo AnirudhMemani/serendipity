@@ -1,9 +1,9 @@
+import axios from "axios";
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { Room } from "./Room";
-import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 import { useToast } from "./ui/use-toast";
-import axios from "axios";
 
 export const Landing: React.FC = (): JSX.Element => {
     const [name, setName] = useState("");

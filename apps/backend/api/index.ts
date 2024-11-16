@@ -12,7 +12,7 @@ const server = createServer(app);
 const port = parseInt(process.env.PORT || "3000");
 const allowedHosts = process.env.ALLOWED_HOSTS || "*";
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (_req: Request, res: Response) => {
     res.send(
         `<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">Welcome to Serendipity!</div>`
     );
@@ -28,9 +28,7 @@ const userManager = new UserManager();
 
 io.on("connection", (socket: Socket) => {
     console.log("a user connected");
-    socket.on("connect-user", ({ name }: { name: string }) => {
-        userManager.addUser(name, socket);
-    });
+    userManager.addUser("randomName", socket);
     socket.on("disconnect", () => {
         console.log("user disconnected");
         userManager.removeUser(socket.id);

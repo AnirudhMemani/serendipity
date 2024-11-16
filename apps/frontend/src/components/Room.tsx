@@ -143,8 +143,6 @@ export const Room = ({
             }
         });
 
-        console.log("Just before emit user");
-        socket.emit("connect-user", { name });
         setSocket(socket);
     }, [name]);
 

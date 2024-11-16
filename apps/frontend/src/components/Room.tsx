@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
-import { Socket, io } from 'socket.io-client';
-import ActionButton from './ActionButton';
+import { useEffect, useRef, useState } from "react";
+import { Socket, io } from "socket.io-client";
+import ActionButton from "./ActionButton";
 
-const URL = 'http://localhost:3000';
+const URL = "http://localhost:3000";
 
 export const Room = ({
     name,
@@ -29,8 +29,8 @@ export const Room = ({
     useEffect(() => {
         const socket = io(URL);
 
-        socket.on('send-offer', async ({ roomId }) => {
-            console.log('sending offer');
+        socket.on("send-offer", async ({ roomId }) => {
+            console.log("sending offer");
 
             setLobby(false);
 
@@ -38,9 +38,9 @@ export const Room = ({
 
             pc.onicecandidate = async (e) => {
                 if (e.candidate) {
-                    socket.emit('add-ice-candidate', {
+                    socket.emit("add-ice-candidate", {
                         candidate: e.candidate,
-                        type: 'sender',
+                        type: "sender",
                         roomId,
                     });
                 }
@@ -50,7 +50,7 @@ export const Room = ({
                 const sdp = await pc.createOffer();
                 await pc.setLocalDescription(sdp);
                 setSendingPc(pc);
-                socket.emit('offer', {
+                socket.emit("offer", {
                     sdp,
                     roomId,
                 });
@@ -65,8 +65,8 @@ export const Room = ({
             }
         });
 
-        socket.on('offer', async ({ roomId, sdp: remoteSdp }) => {
-            console.log('received offer');
+        socket.on("offer", async ({ roomId, sdp: remoteSdp }) => {
+            console.log("received offer");
 
             setLobby(false);
 
@@ -76,9 +76,9 @@ export const Room = ({
                 if (remoteVideoRef.current) {
                     const remoteVideo = remoteVideoRef.current;
 
-                    if (event.type === 'audio') {
+                    if (event.type === "audio") {
                         setRemoteAudioTrack(event.track);
-                    } else if (event.type === 'video') {
+                    } else if (event.type === "video") {
                         setRemoteVideoTrack(event.track);
                     }
 
@@ -96,9 +96,9 @@ export const Room = ({
 
             pc.onicecandidate = async (e) => {
                 if (e.candidate) {
-                    socket.emit('add-ice-candidate', {
+                    socket.emit("add-ice-candidate", {
                         candidate: e.candidate,
-                        type: 'receiver',
+                        type: "receiver",
                         roomId,
                     });
                 }
@@ -110,13 +110,13 @@ export const Room = ({
 
             setReceivingPc(pc);
 
-            socket.emit('answer', {
+            socket.emit("answer", {
                 roomId,
                 sdp: sdp,
             });
         });
 
-        socket.on('answer', ({ sdp: remoteSdp }) => {
+        socket.on("answer", ({ sdp: remoteSdp }) => {
             setLobby(false);
 
             setSendingPc((pc) => {
@@ -125,12 +125,12 @@ export const Room = ({
             });
         });
 
-        socket.on('lobby', () => {
+        socket.on("lobby", () => {
             setLobby(true);
         });
 
-        socket.on('add-ice-candidate', ({ candidate, type }) => {
-            if (type == 'sender') {
+        socket.on("add-ice-candidate", ({ candidate, type }) => {
+            if (type == "sender") {
                 setReceivingPc((pc) => {
                     pc?.addIceCandidate(candidate);
                     return pc;
@@ -143,6 +143,8 @@ export const Room = ({
             }
         });
 
+        console.log("Just before emit user");
+        socket.emit("connect-user", { name });
         setSocket(socket);
     }, [name]);
 
@@ -163,7 +165,7 @@ export const Room = ({
                     <div className="flex h-full w-full items-center justify-center">
                         <div className="flex h-[70%] w-full items-center justify-around gap-4 px-4">
                             <ActionButton
-                                title={'Next'}
+                                title={"Next"}
                                 className="bg-[#50b58d] shadow-[0_9px_rgba(67,_169,_128,_1)] active:shadow-[0_5px_rgba(67,_169,_128,_0.8)]"
                             />
                             <ActionButton
@@ -175,7 +177,7 @@ export const Room = ({
                                 className="bg-white shadow-[0_9px_rgba(30,_58,_138,_0.8)] active:shadow-[0_5px_rgba(30,_58,_138,_1)] dark:bg-blue-700"
                             />
                             <ActionButton
-                                title={isMuted ? 'unmute' : 'mute'}
+                                title={isMuted ? "unmute" : "mute"}
                                 className="bg-white shadow-[0_9px_rgba(30,_58,_138,_0.8)] active:shadow-[0_5px_rgba(30,_58,_138,_1)] dark:bg-blue-700"
                                 onClick={() => {
                                     if (localAudioTrack) {

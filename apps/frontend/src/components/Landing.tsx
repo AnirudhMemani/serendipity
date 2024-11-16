@@ -1,19 +1,19 @@
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
-import { Room } from './Room';
-import { Input } from './ui/input';
-import { Button } from './ui/button';
-import { useToast } from './ui/use-toast';
-import axios from 'axios';
+import React, { FormEvent, useEffect, useRef, useState } from "react";
+import { Room } from "./Room";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { useToast } from "./ui/use-toast";
+import axios from "axios";
 
 export const Landing: React.FC = (): JSX.Element => {
-    const [name, setName] = useState('');
+    const [name, setName] = useState("");
     const videoRef = useRef<HTMLVideoElement>(null);
 
     const [localAudioTrack, setLocalAudioTrack] = useState<MediaStreamTrack | null>(null);
     const [localVideoTrack, setlocalVideoTrack] = useState<MediaStreamTrack | null>(null);
 
     const [joined, setJoined] = useState(false);
-    const [location, setLocation] = useState<string>('Not Found');
+    const [location, setLocation] = useState<string>("Not Found");
     const { toast } = useToast();
 
     const openCageAPIkey = import.meta.env.VITE_OPEN_CAGE_API_KEY;
@@ -44,14 +44,14 @@ export const Landing: React.FC = (): JSX.Element => {
             } catch (error) {
                 console.error(error);
                 toast({
-                    title: 'Mic not found!',
+                    title: "Mic not found!",
                 });
             }
         } catch (error) {
             console.error(error);
             toast({
-                title: 'Uh oh! Something went wrong.',
-                description: 'Camera not found! You need a camera to talk to strangers on Serendipity',
+                title: "Uh oh! Something went wrong.",
+                description: "Camera not found! You need a camera to talk to strangers on Serendipity",
             });
         }
     };
@@ -61,11 +61,11 @@ export const Landing: React.FC = (): JSX.Element => {
             const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude},${longitude}&key=${openCageAPIkey}`;
             const response = await axios.get(url);
             if (response.status === 200) {
-                console.log('\nCountry:', response.data.results[0].components.country);
+                console.log("\nCountry:", response.data.results[0].components.country);
                 setLocation(response.data.results[0].components.country);
             } else {
                 toast({
-                    title: 'Failed to get Geo Location Information',
+                    title: "Failed to get Geo Location Information",
                 });
             }
         } catch (error) {
@@ -91,19 +91,19 @@ export const Landing: React.FC = (): JSX.Element => {
     const getGeoLocation = async () => {
         if (navigator.geolocation) {
             const result = await navigator.permissions.query({
-                name: 'geolocation',
+                name: "geolocation",
             });
-            if (result.state === 'denied') {
+            if (result.state === "denied") {
                 toast({
-                    title: 'Location permission denied',
+                    title: "Location permission denied",
                     description:
-                        'Please navigate to site settings and manually provide location access for better matches',
+                        "Please navigate to site settings and manually provide location access for better matches",
                 });
             } else {
                 navigator.geolocation.getCurrentPosition(success, errors, options);
             }
         } else {
-            toast({ title: 'Geolocation is not supported by this browser.' });
+            toast({ title: "Geolocation is not supported by this browser." });
         }
     };
 

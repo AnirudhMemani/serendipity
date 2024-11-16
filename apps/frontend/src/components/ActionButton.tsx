@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils';
-import React from 'react';
+import { cn } from "@/lib/utils";
+import React from "react";
 
 type TActionButtonProps = {
     title: string;
@@ -13,7 +13,7 @@ const ActionButton: React.FC<TActionButtonProps> = ({ title, onClick, className 
         <React.Fragment>
             <button
                 className={cn(
-                    'h-full flex-1 cursor-pointer rounded-2xl border-none text-center text-2xl !capitalize outline-none active:translate-y-1',
+                    "h-full flex-1 cursor-pointer rounded-2xl border-none text-center text-2xl !capitalize outline-none active:translate-y-1",
                     className
                 )}
                 onClick={onClick}

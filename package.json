@@ -1,23 +1,32 @@
 {
-  "name": "serendipity",
-  "private": true,
-  "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
-  },
-  "devDependencies": {
-    "prettier": "^3.2.5",
-    "turbo": "^2.3.0",
-    "typescript": "5.5.4"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "packageManager": "npm@9.7.1",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+    "name": "serendipity",
+    "private": true,
+    "scripts": {
+        "build": "turbo build",
+        "dev": "turbo dev",
+        "lint": "turbo lint",
+        "format": "prettier --write \"**/*.{ts,tsx,md,json,html,css,js}\"",
+        "prepare": "husky install"
+    },
+    "devDependencies": {
+        "husky": "^8.0.0",
+        "lint-staged": "^15.2.10",
+        "prettier": "^3.3.3",
+        "prettier-plugin-tailwindcss": "^0.6.8",
+        "turbo": "^2.3.0",
+        "typescript": "5.5.4"
+    },
+    "lint-staged": {
+        "*.{js,jsx,ts,tsx}": [
+            "npm run format"
+        ]
+    },
+    "engines": {
+        "node": ">=18"
+    },
+    "packageManager": "npm@9.7.1",
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ]
 }

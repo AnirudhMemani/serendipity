@@ -6,7 +6,7 @@ import { Navbar } from "./layouts/Navbar";
 
 function App() {
     return (
-        <div>
+        <>
             <BrowserRouter>
                 <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
                     <Navbar />
@@ -17,7 +17,7 @@ function App() {
                 </ThemeProvider>
             </BrowserRouter>
             <Toaster />
-        </div>
+        </>
     );
 }
 

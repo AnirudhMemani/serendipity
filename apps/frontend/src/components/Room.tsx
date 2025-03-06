@@ -74,23 +74,25 @@ export const Room = ({
 
             pc.ontrack = (event: RTCTrackEvent) => {
                 if (remoteVideoRef.current) {
+                    const track = event.track;
                     const remoteVideo = remoteVideoRef.current;
 
-                    if (event.type === "audio") {
-                        setRemoteAudioTrack(event.track);
-                    } else if (event.type === "video") {
-                        setRemoteVideoTrack(event.track);
+                    // Check track kind instead of event.type
+                    if (track.kind === "audio") {
+                        setRemoteAudioTrack(track);
+                    } else if (track.kind === "video") {
+                        setRemoteVideoTrack(track);
                     }
 
-                    remoteVideo.srcObject = new MediaStream([event.track]);
+                    // Create or update the MediaStream
+                    if (!remoteVideo.srcObject) {
+                        remoteVideo.srcObject = new MediaStream();
+                    }
 
-                    // const isPlaying =
-                    //     remoteVideo.currentTime > 0 &&
-                    //     !remoteVideo.paused &&
-                    //     !remoteVideo.ended &&
-                    //     remoteVideo.readyState > remoteVideo.HAVE_CURRENT_DATA;
+                    // Add the track to the existing MediaStream
+                    (remoteVideo.srcObject as MediaStream).addTrack(track);
 
-                    remoteVideo.play();
+                    remoteVideo.play().catch(console.error);
                 }
             };
 
